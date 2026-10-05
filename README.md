@@ -122,11 +122,11 @@ git push -u origin feature/<your-algorithm>
 |---|---|
 | Parser + `Problem` class | Kevin |
 | CUS1, CUS2 | Kevin |
-| DFS | TBD |
-| BFS | TBD |
-| GBFS | TBD |
-| AS (A\*) | TBD |
-| Test cases (15+) | TBD |
+| DFS | Syed |
+| BFS | Hassan |
+| GBFS | Syed |
+| AS (A\*) | Hassan |
+| Test cases (15+) | Sakib |
 | Report | All |
 
 ## Deadline
