@@ -6,6 +6,8 @@ destination nodes on a 2D graph with directed, weighted edges.
 
 Implemented methods: **DFS, BFS, GBFS, AS (A\*), CUS1, CUS2**.
 
+**Deadline: Sunday, 25 Oct 2026, 11:59pm.**
+
 ## Usage
 
 ```
@@ -17,23 +19,26 @@ Methods: `DFS`, `BFS`, `GBFS`, `AS`, `CUS1`, `CUS2`
 Example:
 
 ```
-python search.py PathFinder-test-1.txt BFS
+python search.py tests/test-01-spec-example.txt BFS
 ```
 
-## Project Structure
+## Project structure
 
 ```
 search.py          # CLI entry point, dispatches to the chosen algorithm
 problem.py         # Problem class, file parser, heuristic (shared by all)
+run_tests.py       # runs methods on test files, validates, writes results.csv
 algorithms/
   dfs.py  bfs.py  gbfs.py  astar.py  cus1.py  cus2.py
-tests/             # test case files (aim for 15+)
+tests/             # 19 test files + expected.json + README.md (scenario list)
+docs/ai-usage-log.md   # every member logs AI use here (needed for the report)
+AGENTS.md          # rules for AI assistants (read automatically by most tools)
 ```
 
-One algorithm = one file. Please do not edit another member's file without
-telling them first.
+One algorithm = one file. Do not edit another member's file, `problem.py`,
+`search.py`, `run_tests.py` or `tests/` without telling the owner first.
 
-## Team Contract (everyone must follow)
+## Team contract (everyone must follow)
 
 ### Function signature
 
@@ -58,6 +63,7 @@ def search(problem):
 | `problem.neighbors(n)` | List of `(neighbor, cost)`, already sorted ascending |
 | `problem.h(n)` | Heuristic: Euclidean distance to the nearest destination |
 | `problem.is_goal(n)` | `True` if `n` is a destination |
+| `problem.path_cost(path)` | Total cost of a path, `None` if a step is not a valid edge |
 
 ### Shared rules
 
@@ -68,8 +74,8 @@ def search(problem):
    child node created and added to the frontier.
 3. **Tie-breaking (from the spec):** when priorities are equal, expand the
    smaller node number first; if still equal, expand the node that was added
-   first (chronological order). For priority queues use tuples like
-   `(priority, counter, ...)` where `counter` increases monotonically.
+   first (chronological order). For priority queues use tuples
+   `(priority, node, counter, ...)` where `counter` increases on every push.
 4. **Goal test:** performed when a node is *removed from the frontier*
    (expanded), not when it is generated.
 5. **No `print` inside algorithms.** Only `search.py` prints output.
@@ -85,7 +91,7 @@ def search(problem):
 Example:
 
 ```
-PathFinder-test-1.txt BFS
+tests/test-01-spec-example.txt BFS
 4 12
 2 1 4
 ```
@@ -96,16 +102,53 @@ If no goal is reachable: `<filename> <method>` followed by
 > Note: the exact counting rule and path format are pending confirmation
 > from our tutor.
 
-## Git Workflow
+## Testing
+
+`tests/` has 19 cases (the assignment asks for at least 15). Scenarios include
+no solution, origin is a goal, one-way traps, cycles, dead ends, ties, many
+goals, a dense graph, a grid, a seeded random graph, and a messy file format
+for the parser. See `tests/README.md` for the full list.
+
+```
+python run_tests.py                       # every method on every test
+python run_tests.py --methods BFS,DFS     # only your methods
+python run_tests.py --files "tests/test-03*.txt"
+python run_tests.py --cli                 # also checks the printed output format
+```
+
+For each result the runner checks that the path starts at the origin, ends at a
+destination, uses only existing directed edges and never visits a node twice.
+Methods in `GUARANTEED_OPTIMAL` (top of `run_tests.py`, currently `AS`) must also
+match the optimal cost in `tests/expected.json`. A method that is still a stub
+shows `TODO` and does not count as a failure. Every run writes `results.csv`
+(goal, nodes created, cost, optimal or not, time), which is the raw data for the
+Insights section of the report.
+
+Rules for tests:
+
+- Never edit `tests/expected.json` to make a test pass.
+- When adding a test, also add its entry to `expected.json`, and make sure every
+  edge cost is at least the straight-line distance between its two nodes
+  (otherwise the Euclidean heuristic is not admissible).
+- For a quick experiment without a file, `sample_problem()` in `problem.py`
+  builds the assignment's example by hand.
+
+## AI assistants
+
+Most of us will use AI. `AGENTS.md` holds the rules that keep every AI-written
+algorithm compatible, and most tools read it automatically (otherwise paste it
+into your first message). The assignment requires the report to acknowledge AI
+use, so add a row to `docs/ai-usage-log.md` after each session. You must be able
+to explain every line you commit.
+
+## Git workflow
 
 - Never commit directly to `main`.
-- Create a branch per algorithm: `feature/dfs`, `feature/bfs`,
-  `feature/gbfs`, `feature/astar`, `feature/cus1`, `feature/cus2`.
-- Open a Pull Request when your algorithm works; at least one teammate
-  reviews before merging.
-- Write clear commit messages (e.g. `Add BFS with tie-breaking`).
-
-Quick start:
+- One branch per algorithm: `feature/dfs`, `feature/bfs`, `feature/gbfs`,
+  `feature/astar`, `feature/cus1`, `feature/cus2`.
+- Open a Pull Request when your algorithm passes `run_tests.py`; at least one
+  teammate reviews before merging.
+- Clear commit messages (e.g. `Add BFS with tie-breaking`).
 
 ```
 git clone <repo-url>
@@ -116,21 +159,16 @@ git commit -m "Add <algorithm>"
 git push -u origin feature/<your-algorithm>
 ```
 
-## Task Assignment
+## Task assignment
 
 | Task | Owner |
 |---|---|
 | Parser + `Problem` class | Kevin |
-| CUS1 (bidirectional search) | Kevin |
+| CUS1 | Kevin |
 | Research | Kevin |
-| CUS2 | Sakib |
-| DFS | Syed |
-| BFS | Hassan |
-| GBFS | Syed |
-| AS (A\*) | Hassan |
-| Test cases (15+) | Sakib |
+| CUS2 (informed method) | TBD |
+| DFS | TBD |
+| BFS | TBD |
+| GBFS | TBD |
+| AS (A\*) | TBD |
 | Report | All |
-
-## Deadline
-
-Sunday, 25 Oct 2026, 11:59pm.

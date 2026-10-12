@@ -50,7 +50,6 @@ def search(problem):
 ## Before you say you are done
 
 1. Run `python run_tests.py --methods <YOUR_METHOD>` and fix every FAIL/ERROR.
-   (Until `parse_file` exists, test with `sample_problem()` from `problem.py`.)
 2. Run `python run_tests.py --methods <YOUR_METHOD> --cli` to check the output format.
 3. Never edit `tests/expected.json` to make a test pass.
 4. Do not claim the algorithm is optimal unless it guarantees it. If it does,

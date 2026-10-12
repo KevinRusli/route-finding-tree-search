@@ -101,10 +101,7 @@ def main():
     for fn in files:
         base = os.path.basename(fn)
         exp = expected[base]
-        try:
-            problem = parse_file(fn)
-        except NotImplementedError:
-            sys.exit("parse_file is not implemented yet (Kevin). Test algorithms with sample_problem() until then.")
+        problem = parse_file(fn)
         for m in methods:
             start = time.perf_counter()
             goal = nodes = cost = None
