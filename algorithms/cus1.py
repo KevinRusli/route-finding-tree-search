@@ -1,7 +1,9 @@
-"""Algoritma: cus1. Ikuti aturan di README.md."""
+"""Custom method 1 (CUS1), uninformed.
+
+Contract: see README.md and AGENTS.md.
+"""
 
 
 def search(problem):
-    # TODO: implementasi
-    # return goal, nodes_created, path
+    """Return (goal, nodes_created, path). goal is None if no goal is reachable."""
     raise NotImplementedError

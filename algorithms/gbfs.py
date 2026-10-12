@@ -1,7 +1,9 @@
-"""Algoritma: gbfs. Ikuti aturan di README.md."""
+"""Greedy best-first search (GBFS), informed: orders the frontier by h(n).
+
+Contract: see README.md and AGENTS.md.
+"""
 
 
 def search(problem):
-    # TODO: implementasi
-    # return goal, nodes_created, path
+    """Return (goal, nodes_created, path). goal is None if no goal is reachable."""
     raise NotImplementedError
