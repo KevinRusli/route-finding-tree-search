@@ -121,7 +121,9 @@ git push -u origin feature/<your-algorithm>
 | Task | Owner |
 |---|---|
 | Parser + `Problem` class | Kevin |
-| CUS1, CUS2 | Kevin |
+| CUS1 (bidirectional search) | Kevin |
+| Research | Kevin |
+| CUS2 | Sakib |
 | DFS | Syed |
 | BFS | Hassan |
 | GBFS | Syed |
