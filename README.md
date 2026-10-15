@@ -92,7 +92,7 @@ Example:
 
 ```
 tests/test-01-spec-example.txt BFS
-4 12
+4 10
 2 1 4
 ```
 
@@ -154,7 +154,7 @@ to explain every line you commit.
 git clone <repo-url>
 git checkout -b feature/<your-algorithm>
 # ...work, then...
-git add .
+git add algorithms/<your-file>.py
 git commit -m "Add <algorithm>"
 git push -u origin feature/<your-algorithm>
 ```
@@ -166,9 +166,9 @@ git push -u origin feature/<your-algorithm>
 | Parser + `Problem` class | Kevin |
 | CUS1 | Kevin |
 | Research | Kevin |
-| CUS2 (informed method) | TBD |
-| DFS | TBD |
-| BFS | TBD |
-| GBFS | TBD |
-| AS (A\*) | TBD |
+| CUS2 (informed method) | Sakib |
+| DFS | Ali Murtaza Shah Syed |
+| BFS | Hassan Ali Shah SYED |
+| GBFS | Ali Murtaza Shah SYED |
+| AS (A\*) | Hassan Ali Shah SYED |
 | Report | All |
