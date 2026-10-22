@@ -30,7 +30,7 @@ problem.py         # Problem class, file parser, heuristic (shared by all)
 run_tests.py       # runs methods on test files, validates, writes results.csv
 algorithms/
   dfs.py  bfs.py  gbfs.py  astar.py  cus1.py  cus2.py
-tests/             # 19 test files + expected.json + README.md (scenario list)
+tests/             # 20 test files + expected.json + README.md (scenario list)
 docs/ai-usage-log.md   # every member logs AI use here (needed for the report)
 AGENTS.md          # rules for AI assistants (read automatically by most tools)
 ```
@@ -92,7 +92,7 @@ Example:
 
 ```
 tests/test-01-spec-example.txt BFS
-4 12
+4 10
 2 1 4
 ```
 
@@ -104,9 +104,9 @@ If no goal is reachable: `<filename> <method>` followed by
 
 ## Testing
 
-`tests/` has 19 cases (the assignment asks for at least 15). Scenarios include
+`tests/` has 20 cases (the assignment asks for at least 15). Scenarios include
 no solution, origin is a goal, one-way traps, cycles, dead ends, ties, many
-goals, a dense graph, a grid, a seeded random graph, and a messy file format
+goals, a dense graph, a 4x4 and a 10x10 grid, a seeded random graph, and a messy file format
 for the parser. See `tests/README.md` for the full list.
 
 ```
@@ -143,21 +143,21 @@ to explain every line you commit.
 
 ## Git workflow
 
-- Never commit directly to `main`.
-- One branch per algorithm: `feature/dfs`, `feature/bfs`, `feature/gbfs`,
-  `feature/astar`, `feature/cus1`, `feature/cus2`.
-- Open a Pull Request when your algorithm passes `run_tests.py`; at least one
-  teammate reviews before merging.
+- Work directly on `main`; there are no feature branches.
+- Run `git pull` before every `git push` so you pick up teammates' changes.
+- Only commit your own files (see "One algorithm = one file" above).
 - Clear commit messages (e.g. `Add BFS with tie-breaking`).
 
 ```
 git clone <repo-url>
-git checkout -b feature/<your-algorithm>
 # ...work, then...
-git add .
+git add algorithms/<your-file>.py
 git commit -m "Add <algorithm>"
-git push -u origin feature/<your-algorithm>
+git pull
+git push
 ```
+
+If `git push` is rejected, someone pushed first: run `git pull`, then `git push` again.
 
 ## Task assignment
 
@@ -166,9 +166,9 @@ git push -u origin feature/<your-algorithm>
 | Parser + `Problem` class | Kevin |
 | CUS1 | Kevin |
 | Research | Kevin |
-| CUS2 (informed method) | TBD |
-| DFS | TBD |
-| BFS | TBD |
-| GBFS | TBD |
-| AS (A\*) | TBD |
+| CUS2 (informed method) | Sakib |
+| DFS | Ali Murtaza Shah Syed |
+| BFS | Hassan Ali Shah SYED |
+| GBFS | Ali Murtaza Shah SYED |
+| AS (A\*) | Hassan Ali Shah SYED |
 | Report | All |
