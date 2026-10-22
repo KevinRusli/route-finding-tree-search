@@ -1,10 +1,9 @@
 """Depth-first search (DFS), uninformed.
 
-Frontier is a stack (LIFO): the most recently generated node is expanded next.
-Because neighbors() already comes out in ascending order, and each node's
-neighbors are pushed in that order, popping from the end of the stack means
-the smallest-numbered child is explored first (push ascending, pop reverses
-to pop the smallest last in, which goes first) -- see the reversed() below.
+Frontier is a stack (LIFO): the most recently added node is expanded next.
+Children are pushed in descending order, so the smallest-numbered child ends
+up on top of the stack and is expanded first (the assignment's tie-breaking
+rule).
 
 Contract: see README.md and AGENTS.md.
 """

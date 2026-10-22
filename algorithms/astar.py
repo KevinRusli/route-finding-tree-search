@@ -30,9 +30,11 @@ def search(problem):
             if child in path:
                 continue
             child_g = g + cost
+            # Round f so float noise (e.g. 0.1 + 0.2 = 0.30000000000000004)
+            # cannot break a tie that is really equal.
+            child_f = round(child_g + problem.h(child), 9)
             counter += 1
-            heapq.heappush(frontier, (child_g + problem.h(child), child, counter,
-                                      child_g, path + [child]))
+            heapq.heappush(frontier, (child_f, child, counter, child_g, path + [child]))
             nodes_created += 1
 
     return None, nodes_created, []
