@@ -30,7 +30,7 @@ problem.py         # Problem class, file parser, heuristic (shared by all)
 run_tests.py       # runs methods on test files, validates, writes results.csv
 algorithms/
   dfs.py  bfs.py  gbfs.py  astar.py  cus1.py  cus2.py
-tests/             # 20 test files + expected.json + README.md (scenario list)
+tests/             # 19 test files + expected.json + README.md (scenario list)
 docs/ai-usage-log.md   # every member logs AI use here (needed for the report)
 AGENTS.md          # rules for AI assistants (read automatically by most tools)
 ```
@@ -104,9 +104,9 @@ If no goal is reachable: `<filename> <method>` followed by
 
 ## Testing
 
-`tests/` has 20 cases (the assignment asks for at least 15). Scenarios include
+`tests/` has 19 cases (the assignment asks for at least 15). Scenarios include
 no solution, origin is a goal, one-way traps, cycles, dead ends, ties, many
-goals, a dense graph, a 4x4 and a 10x10 grid, a seeded random graph, and a messy file format
+goals, a dense graph, a 4x4 grid, a seeded random graph, and a messy file format
 for the parser. See `tests/README.md` for the full list.
 
 ```
@@ -167,7 +167,7 @@ If `git push` is rejected, someone pushed first: run `git pull`, then `git push`
 | CUS1 | Kevin |
 | Research | Kevin |
 | CUS2 (informed method) | Sakib |
-| DFS | Ali Murtaza Shah Syed |
+| DFS | Ali Murtaza Shah SYED |
 | BFS | Hassan Ali Shah SYED |
 | GBFS | Ali Murtaza Shah SYED |
 | AS (A\*) | Hassan Ali Shah SYED |
