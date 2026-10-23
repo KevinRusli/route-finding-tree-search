@@ -1,6 +1,19 @@
-"""Entry point: python search.py <filename> <method>"""
+"""Entry point.
+
+Normal mode (stops at the first destination reached, as in the brief):
+    python search.py <filename> <method>
+
+Multi-destination mode (visits every destination, one leg at a time):
+    python search.py <filename> <method> all          # every destination in the file
+    python search.py <filename> <method> 4 5          # only these nodes
+
+In multi mode the chosen method is run again and again: each leg starts at the
+goal the previous leg reached and searches for the destinations still left.
+The method itself decides which goal comes next, so the visiting order is the
+method's own order, not necessarily the shortest overall tour.
+"""
 import sys
-from problem import parse_file
+from problem import Problem, parse_file
 from algorithms import dfs, bfs, gbfs, astar, cus1, cus2
 
 METHODS = {
@@ -8,10 +21,14 @@ METHODS = {
     "AS": astar.search, "CUS1": cus1.search, "CUS2": cus2.search,
 }
 
+USAGE = ("Usage: python search.py <filename> <method>\n"
+         "       python search.py <filename> <method> all\n"
+         "       python search.py <filename> <method> <node> <node> ...")
+
 
 def main():
-    if len(sys.argv) != 3:
-        print("Usage: python search.py <filename> <method>")
+    if len(sys.argv) < 3:
+        print(USAGE)
         return
     filename, method = sys.argv[1], sys.argv[2].upper()
     if method not in METHODS:
@@ -19,14 +36,66 @@ def main():
         return
 
     problem = parse_file(filename)
-    goal, nodes_created, path = METHODS[method](problem)
+    extra = sys.argv[3:]
 
-    print(f"{filename} {method}")
-    if goal is None:
-        print(f"No goal is reachable; {nodes_created}")
+    # ---- Normal mode: one search, stop at the first goal reached ----
+    if not extra:
+        goal, nodes_created, path = METHODS[method](problem)
+        print(f"{filename} {method}")
+        if goal is None:
+            print(f"No goal is reachable; {nodes_created}")
+        else:
+            print(f"{goal} {nodes_created}")
+            print(" ".join(str(n) for n in path))
+        return
+
+    # ---- Multi mode: work out which destinations must be visited ----
+    if len(extra) == 1 and extra[0].lower() == "all":
+        targets = list(problem.destinations)
     else:
-        print(f"{goal} {nodes_created}")
+        targets = []
+        for word in extra:
+            if not word.isdigit() or int(word) not in problem.coords:
+                print(f"'{word}' is not a node in {filename}")
+                print(USAGE)
+                return
+            if int(word) not in targets:  # ignore repeats
+                targets.append(int(word))
+
+    print(f"{filename} {method} (visit all: {' '.join(str(t) for t in targets)})")
+
+    current = problem.origin
+    remaining = list(targets)
+    full_path = [current]
+    visited = []
+    total_nodes = 0
+    leg = 0
+
+    while remaining:
+        leg += 1
+        # Same map, but start where we are now and only look for goals left.
+        leg_problem = Problem(problem.coords, problem.graph, current, remaining)
+        goal, nodes_created, path = METHODS[method](leg_problem)
+        total_nodes += nodes_created
+
+        if goal is None:
+            print(f"Leg {leg}: no remaining goal is reachable from {current}; {nodes_created}")
+            break
+
+        print(f"Leg {leg}: {goal} {nodes_created}")
         print(" ".join(str(n) for n in path))
+        full_path += path[1:]  # path[0] is the current node, already in full_path
+        visited.append(goal)
+        remaining.remove(goal)
+        current = goal
+
+    # ---- Summary of the whole trip ----
+    print(f"Visited: {' '.join(str(n) for n in visited) or 'none'}")
+    if remaining:
+        print(f"Not reachable: {' '.join(str(n) for n in remaining)}")
+    print(f"Total nodes created: {total_nodes}")
+    print(f"Full path: {' '.join(str(n) for n in full_path)}")
+    print(f"Total cost: {problem.path_cost(full_path)}")
 
 
 if __name__ == "__main__":
