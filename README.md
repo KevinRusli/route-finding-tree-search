@@ -11,7 +11,9 @@ Implemented methods: **DFS, BFS, GBFS, AS (A\*), CUS1, CUS2**.
 ## Usage
 
 ```
-python search.py <filename> <method>
+python search.py <testfile name> <method>              # visit one goal
+python search.py <testfile name> <method> all          # visit every destination
+python search.py <testfile name> <method> 4 5          # visit only these nodes
 ```
 
 Methods: `DFS`, `BFS`, `GBFS`, `AS`, `CUS1`, `CUS2`
@@ -20,6 +22,8 @@ Example:
 
 ```
 python search.py tests/test-01-spec-example.txt BFS
+python search.py tests/test-01-spec-example.txt BFS all
+python search.py tests/test-01-spec-example.txt AS 5 6
 ```
 
 ## Project structure
@@ -114,9 +118,6 @@ python run_tests.py                       # every method on every test
 python run_tests.py --methods BFS,DFS     # only your methods
 python run_tests.py --files "tests/test-03*.txt"
 python run_tests.py --cli                 # also checks the printed output format
-python search.py <testfile name> <method>              # one file, normal: stop at the first goal
-python search.py <testfile name> <method> all          # visit every destination
-python search.py <testfile name> <method> 4 5          # visit only these nodes
 ```
 
 For each result the runner checks that the path starts at the origin, ends at a
