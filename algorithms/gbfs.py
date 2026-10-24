@@ -1,12 +1,11 @@
 """Greedy best-first search (GBFS), informed.
 
-Frontier is a priority queue ordered only by the heuristic h(n): the
-estimated straight-line distance from a node to the nearest destination.
-The cost already paid to reach a node is ignored, which is what makes this
-"greedy" rather than A*.
+Frontier's a priority queue, sorted purely by h(n) the
+estimated straight-line distance to the nearest goal. We don't
+care what it cost to get here, only how close it looks from
+here. That's the "greedy" part, and what separates this from A*.
 
-Contract: see README.md and AGENTS.md.
-"""
+Contract: README.md and AGENTS.md."""
 import heapq
 
 
@@ -15,9 +14,10 @@ def search(problem):
     origin = problem.origin
     nodes_created = 1  # the origin counts as 1
 
-    # Heap entries: (h(node), node, counter, path). node breaks ties between
-    # equal h values (smaller node first), counter breaks ties between equal
-    # (h, node) pairs by insertion order (the assignment's tie-breaking rule).
+
+# Heap entries: (h(node), node, counter, path). If two nodes tie
+# on h, lower node number wins. Still tied? Counter breaks it by
+# insertion order that's the tie-break rule the assignment wants.
     counter = 0
     frontier = [(problem.h(origin), origin, counter, [origin])]
 
