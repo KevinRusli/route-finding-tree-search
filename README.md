@@ -11,10 +11,10 @@ Implemented methods: **DFS, BFS, GBFS, AS (A\*), CUS1, CUS2**.
 ## Usage
 
 ```
-python search.py <testfile name> <method>              # visit one goal
-python search.py <testfile name> <method> all          # visit every destination
-python search.py <testfile name> <method> 4 5          # visit only these nodes
-python search.py <testfile name> ALL                   # research: cheapest order to visit every destination
+python search.py tests/<testfile>.txt <method>              # visit one goal
+python search.py tests/<testfile>.txt <method> all          # visit every destination
+python search.py tests/<testfile>.txt <method> 4 5          # visit only these nodes
+python search.py tests/<testfile>.txt ALL                   # research: cheapest order to visit every destination
 ```
 
 Methods: `DFS`, `BFS`, `GBFS`, `AS`, `CUS1`, `CUS2`
