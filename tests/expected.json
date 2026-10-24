@@ -2,96 +2,121 @@
   "test-01-spec-example.txt": {
     "scenario": "Example from the assignment sheet (origin 2, goals 5 and 4)",
     "reachable": true,
-    "optimal_cost": 10
+    "optimal_cost": 10,
+    "visit_all_cost": 17
   },
   "test-02-origin-is-goal.txt": {
     "scenario": "Origin is also a destination: path is just the origin, cost 0",
     "reachable": true,
-    "optimal_cost": 0
+    "optimal_cost": 0,
+    "visit_all_cost": 6
   },
   "test-03-no-path.txt": {
     "scenario": "Goal lies in a separate component, no solution exists",
     "reachable": false,
-    "optimal_cost": null
+    "optimal_cost": null,
+    "visit_all_cost": null
   },
   "test-04-one-way-trap.txt": {
     "scenario": "Straight-line route through node 2 is blocked by a one-way edge",
     "reachable": true,
-    "optimal_cost": 10
+    "optimal_cost": 10,
+    "visit_all_cost": 10
   },
   "test-05-single-edge.txt": {
     "scenario": "Smallest possible problem: one edge from origin to goal",
     "reachable": true,
-    "optimal_cost": 5
+    "optimal_cost": 5,
+    "visit_all_cost": 5
   },
   "test-06-equal-cost-goals.txt": {
     "scenario": "Two goals at the same cost from origin: tie-breaking decides",
     "reachable": true,
-    "optimal_cost": 3
+    "optimal_cost": 3,
+    "visit_all_cost": null
   },
   "test-07-cycles.txt": {
     "scenario": "Bidirectional edges and a triangle: loops must be prevented",
     "reachable": true,
-    "optimal_cost": 9
+    "optimal_cost": 9,
+    "visit_all_cost": 9
   },
   "test-08-dead-ends.txt": {
     "scenario": "Several branches end in dead ends before the real route",
     "reachable": true,
-    "optimal_cost": 13
+    "optimal_cost": 13,
+    "visit_all_cost": 13
   },
   "test-09-long-chain.txt": {
     "scenario": "A straight chain of 10 nodes, only one route",
     "reachable": true,
-    "optimal_cost": 18
+    "optimal_cost": 18,
+    "visit_all_cost": 18
   },
   "test-10-diamond-equal-paths.txt": {
     "scenario": "Two different routes with identical cost: tie-breaking decides the path",
     "reachable": true,
-    "optimal_cost": 10
+    "optimal_cost": 10,
+    "visit_all_cost": 10
   },
   "test-11-greedy-trap.txt": {
     "scenario": "Closest-looking node leads to an expensive route: GBFS is not optimal here",
     "reachable": true,
-    "optimal_cost": 14
+    "optimal_cost": 14,
+    "visit_all_cost": 14
   },
   "test-12-tight-heuristic.txt": {
     "scenario": "Edge costs equal straight-line distance (Pythagorean triples)",
     "reachable": true,
-    "optimal_cost": 22
+    "optimal_cost": 22,
+    "visit_all_cost": 22
   },
   "test-13-many-goals.txt": {
     "scenario": "Five destination nodes at once",
     "reachable": true,
-    "optimal_cost": 6
+    "optimal_cost": 6,
+    "visit_all_cost": null
   },
   "test-14-dense-complete.txt": {
     "scenario": "Complete directed graph on 7 nodes: many branches per node",
     "reachable": true,
-    "optimal_cost": 15
+    "optimal_cost": 15,
+    "visit_all_cost": 21
   },
   "test-15-fewer-hops-costs-more.txt": {
     "scenario": "Direct edge has fewest moves but is far more expensive than the long route",
     "reachable": true,
-    "optimal_cost": 9
+    "optimal_cost": 9,
+    "visit_all_cost": 9
   },
   "test-16-origin-no-outgoing.txt": {
     "scenario": "Origin only has incoming edges, so no goal is reachable",
     "reachable": false,
-    "optimal_cost": null
+    "optimal_cost": null,
+    "visit_all_cost": null
   },
   "test-17-grid-4x4.txt": {
     "scenario": "4x4 grid with unit costs: huge number of equal-cost ties",
     "reachable": true,
-    "optimal_cost": 6
+    "optimal_cost": 6,
+    "visit_all_cost": 12
   },
   "test-18-random-20-nodes.txt": {
     "scenario": "Seeded random graph, 20 nodes, mixed one-way and two-way edges",
     "reachable": true,
-    "optimal_cost": 36
+    "optimal_cost": 36,
+    "visit_all_cost": 43
   },
   "test-19-messy-format.txt": {
     "scenario": "Parser stress test: Windows line endings, blank lines, trailing spaces, non-consecutive ids",
     "reachable": true,
-    "optimal_cost": 9
+    "optimal_cost": 9,
+    "visit_all_cost": 19
+  },
+  "test-20-grid-10x10.txt": {
+    "scenario": "10x10 grid with about 20% of the links removed as walls: large search space, many ties, two goals",
+    "reachable": true,
+    "optimal_cost": 18,
+    "visit_all_cost": 44
   }
 }

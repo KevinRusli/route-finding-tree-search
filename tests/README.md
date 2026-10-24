@@ -24,6 +24,7 @@ reachable and the minimum possible path cost (computed independently with Dijkst
 | `test-17-grid-4x4.txt` | 4x4 grid with unit costs: huge number of equal-cost ties | yes | 6 |
 | `test-18-random-20-nodes.txt` | Seeded random graph, 20 nodes, mixed one-way and two-way edges | yes | 36 |
 | `test-19-messy-format.txt` | Parser stress test: Windows line endings, blank lines, trailing spaces, non-consecutive ids | yes | 9 |
+| `test-20-grid-10x10.txt` | 10x10 grid with about 20% of the links removed as walls: large search space, many ties, two goals (91 and 100) | yes | 18 |
 
 ## Adding a test
 

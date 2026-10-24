@@ -5,6 +5,7 @@ Usage:
     python run_tests.py --methods BFS,DFS        # only some methods
     python run_tests.py --files "tests/test-03*.txt"
     python run_tests.py --cli                    # also check the printed output format
+    python run_tests.py --methods ALL            # research: visit every destination
 
 A result is PASS when the returned path is valid (starts at the origin, ends at
 a destination, uses only existing directed edges, visits no node twice). Methods
@@ -22,7 +23,7 @@ import sys
 import time
 
 from problem import parse_file
-from search import METHODS
+from search import METHODS, ALL_METHODS
 
 # Methods that must always return a minimum-cost path. Add yours here only if
 # your algorithm really guarantees optimality (e.g. UCS, A* with the Euclidean h).
@@ -69,6 +70,32 @@ def validate(problem, method, result, exp):
     return "PASS", "", cost
 
 
+def validate_all(problem, result, exp):
+    """Research method ALL: the path must reach EVERY destination at the cheapest
+    total cost. Unlike the six main methods it may pass through a node twice."""
+    try:
+        goal, nodes_created, path = result
+    except (TypeError, ValueError):
+        return "FAIL", "search() must return (goal, nodes_created, path)", None
+    if exp["visit_all_cost"] is None:
+        if goal is None:
+            return "PASS", "", None
+        return "FAIL", "returned a goal but not every destination is reachable", None
+    if goal is None:
+        return "FAIL", "returned no goal but every destination is reachable", None
+    if not path or path[0] != problem.origin or path[-1] != goal:
+        return "FAIL", "path must start at the origin and end at the goal", None
+    missing = [d for d in problem.destinations if d not in path]
+    if missing:
+        return "FAIL", f"path never visits destination(s) {missing}", None
+    cost = problem.path_cost(path)
+    if cost is None:
+        return "FAIL", "path uses a missing or wrong-direction edge", None
+    if abs(cost - exp["visit_all_cost"]) > 1e-9:
+        return "FAIL", f"cost {cost} but cheapest is {exp['visit_all_cost']}", cost
+    return "PASS", "", cost
+
+
 def check_cli_format(filename, method):
     """Run search.py as a subprocess and check the three-line output format."""
     proc = subprocess.run([sys.executable, "search.py", filename, method],
@@ -108,9 +135,12 @@ def main():
             path = []
             note = ""
             try:
-                result = METHODS[m](problem)
+                result = ALL_METHODS[m](problem)
                 ms = (time.perf_counter() - start) * 1000
-                status, note, cost = validate(problem, m, result, exp)
+                if m == "ALL":
+                    status, note, cost = validate_all(problem, result, exp)
+                else:
+                    status, note, cost = validate(problem, m, result, exp)
                 if isinstance(result, tuple) and len(result) == 3:
                     goal, nodes, path = result
             except NotImplementedError:
@@ -118,10 +148,11 @@ def main():
             except Exception as e:  # a crash is reported, never hidden
                 ms, status, note = 0.0, "ERROR", f"{type(e).__name__}: {e}"
             counts[status] += 1
+            target = exp["visit_all_cost"] if m == "ALL" else exp["optimal_cost"]
             is_opt = ""
-            if cost is not None and exp["optimal_cost"] is not None:
-                is_opt = "yes" if abs(cost - exp["optimal_cost"]) < 1e-9 else "no"
-            rows.append([base, m, status, goal, nodes, cost, exp["optimal_cost"], is_opt,
+            if cost is not None and target is not None:
+                is_opt = "yes" if abs(cost - target) < 1e-9 else "no"
+            rows.append([base, m, status, goal, nodes, cost, target, is_opt,
                          " ".join(map(str, path)), round(ms, 3), note])
             if status != "TODO":
                 print(f"{base:<34}{m:<7}{status:<7}{str(goal):<6}{str(nodes):<7}{str(cost):<7}{is_opt:<9}{ms:<8.2f}{note}")
