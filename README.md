@@ -14,6 +14,7 @@ Implemented methods: **DFS, BFS, GBFS, AS (A\*), CUS1, CUS2**.
 python search.py <testfile name> <method>              # visit one goal
 python search.py <testfile name> <method> all          # visit every destination
 python search.py <testfile name> <method> 4 5          # visit only these nodes
+python search.py <testfile name> ALL                   # research: cheapest order to visit every destination
 ```
 
 Methods: `DFS`, `BFS`, `GBFS`, `AS`, `CUS1`, `CUS2`
@@ -24,6 +25,7 @@ Example:
 python search.py tests/test-01-spec-example.txt BFS
 python search.py tests/test-01-spec-example.txt BFS all
 python search.py tests/test-01-spec-example.txt AS 5 6
+python search.py tests/test-01-spec-example.txt ALL
 ```
 
 ## Project structure
@@ -34,7 +36,8 @@ problem.py         # Problem class, file parser, heuristic (shared by all)
 run_tests.py       # runs methods on test files, validates, writes results.csv
 algorithms/
   dfs.py  bfs.py  gbfs.py  astar.py  cus1.py  cus2.py
-tests/             # 19 test files + expected.json + README.md (scenario list)
+  visit_all.py     # research method ALL
+tests/             # 20 test files + expected.json + README.md (scenario list)
 docs/ai-usage-log.md   # every member logs AI use here (needed for the report)
 AGENTS.md          # rules for AI assistants (read automatically by most tools)
 ```
@@ -108,9 +111,9 @@ If no goal is reachable: `<filename> <method>` followed by
 
 ## Testing
 
-`tests/` has 19 cases (the assignment asks for at least 15). Scenarios include
+`tests/` has 20 cases (the assignment asks for at least 15). Scenarios include
 no solution, origin is a goal, one-way traps, cycles, dead ends, ties, many
-goals, a dense graph, a 4x4 grid, a seeded random graph, and a messy file format
+goals, a dense graph, a 4x4 and a 10x10 grid, a seeded random graph, and a messy file format
 for the parser. See `tests/README.md` for the full list.
 
 ```
