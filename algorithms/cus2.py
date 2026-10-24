@@ -1,49 +1,48 @@
-"""Custom method 2 (CUS2), informed: A* search that minimises the number of moves.
+"""CUS2: A* tree search for the fewest moves to any destination.
 
-Every edge counts as one move, whatever its cost. The frontier is a priority
-queue ordered by f(n) = g(n) + h(n), where
-    g(n) = moves taken from the origin to n (path length - 1)
-    h(n) = 0 if n is a destination, otherwise 1 (any non-goal needs at least
-           one more move, so h never overestimates and A* returns a path with
-           the fewest moves)
-The path is fewest-moves, not lowest-cost.
+The frontier orders paths by moves taken + estimated moves remaining.
+The estimate is 0 at a goal and 1 elsewhere, so it never overestimates.
+Ties use the smaller node number, then the earlier insertion.
 
-Contract: see README.md and AGENTS.md.
+Edge costs are ignored. In search.py's "all" mode, each leg has the fewest
+moves, but the combined trip is not guaranteed to have the fewest moves.
 """
 import heapq
 
 
-def moves_heuristic(problem, node):
-    """Lower bound on the moves still needed: 0 at a goal, otherwise 1."""
-    return 0 if problem.is_goal(node) else 1
-
-
 def search(problem):
-    """Return (goal, nodes_created, path). goal is None if no goal is reachable."""
+    """Return (goal, nodes_created, path), or (None, nodes_created, []) on failure."""
     origin = problem.origin
-    nodes_created = 1  # the origin counts as 1
-
-    # Heap entries: (f, node, counter, path). node breaks ties between equal f
-    # values (smaller node first), counter breaks ties between equal (f, node)
-    # pairs by insertion order (the assignment's tie-breaking rule).
+    nodes_created = 1  # Count the origin.
     counter = 0
-    frontier = [(moves_heuristic(problem, origin), origin, counter, [origin])]
+
+    # The origin has taken 0 moves, so its priority is just the estimate.
+    estimate = 0 if problem.is_goal(origin) else 1
+    # Each entry stores (priority, node, insertion order, path).
+    frontier = [(estimate, origin, counter, [origin])]
 
     while frontier:
-        _f, node, _c, path = heapq.heappop(frontier)
+        # Remove the smallest entry; _ marks values we no longer need.
+        _, node, _, path = heapq.heappop(frontier)
 
-        # Goal test on expansion, not on generation.
+        # Accept a goal only when its path is removed from the frontier.
         if problem.is_goal(node):
             return node, nodes_created, path
 
-        for neighbor, _cost in problem.neighbors(node):
+        # Every outgoing edge counts as one move, regardless of its cost.
+        for neighbor, _ in problem.neighbors(node):
+            # Prevent loops on this path; allow the same node on other branches.
             if neighbor in path:
-                continue  # avoid cycling back onto the current path
-            child_path = path + [neighbor]
-            moves = len(child_path) - 1  # g(child): one move per edge
-            nodes_created += 1
-            counter += 1
-            f = moves + moves_heuristic(problem, neighbor)
-            heapq.heappush(frontier, (f, neighbor, counter, child_path))
+                continue
 
+            new_path = path + [neighbor]  # Keep the original path unchanged.
+            moves = len(new_path) - 1
+            estimate = 0 if problem.is_goal(neighbor) else 1
+            priority = moves + estimate  # A*: f = g + h.
+
+            counter += 1
+            heapq.heappush(frontier, (priority, neighbor, counter, new_path))
+            nodes_created += 1  # Count each child added to the frontier.
+
+    # No paths remain and no destination was reached.
     return None, nodes_created, []
