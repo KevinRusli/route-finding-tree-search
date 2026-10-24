@@ -1,10 +1,9 @@
 """Depth-first search (DFS), uninformed.
 
-Frontier's a stack, so last node in is the first one out. Since
-neighbors() hands back kids in ascending order and we push them in
-that same order, popping off the end still gets us the smallest
-one first push goes low to high, pop flips it back. See
-reversed() below for how that's done.
+Frontier is a stack, so the last node in is the first one out.
+neighbors() returns children in ascending order, so we push them in
+reverse (largest first). That leaves the smallest child on top of the
+stack, so it is expanded first (the assignment's tie-breaking rule).
 
 Contract: README.md and AGENTS.md.
 """
@@ -15,10 +14,9 @@ def search(problem):
     origin = problem.origin
     nodes_created = 1  # the origin counts as 1
 
-# Each stack entry is just the path so far (origin to here).
-# We're using the path itself instead of a separate visited set
- # that way we can do the only loop check this assignment allows
-# don't add a node that's already sitting on the current path.
+    # Each stack entry is the path so far (origin to here). Keeping the
+    # path instead of a visited set allows the only loop check this
+    # assignment permits: don't add a node already on the current path.
     stack = [[origin]]
 
     while stack:
@@ -28,8 +26,8 @@ def search(problem):
         if problem.is_goal(node):
             return node, nodes_created, path
 
-# Push the kids in reverse order stack's LIFO, so that flips
-# it back and pops them smallest-first.
+        # Push children in reverse order; the stack is LIFO, so they
+        # come back out smallest first.
         for neighbor, _cost in reversed(problem.neighbors(node)):
             if neighbor in path:
                 continue  # avoid cycling back onto the current path
