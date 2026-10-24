@@ -9,9 +9,11 @@ The search stops as soon as a node created by one side was already reached by
 the other, and joins the two paths at that node. This meeting replaces the usual
 goal test when a node leaves the frontier.
 
-Only edges are used (no coordinates or costs), so it is uninformed. It returns a
-path with the fewest edges, which is not always the cheapest one. nodes_created
-starts at 1 + the number of destinations, then adds 1 for each child created.
+Only edges are used (no coordinates or costs), so it is uninformed. The path
+usually has the fewest edges, but this is not guaranteed: because the search
+stops at the first meeting, a slightly longer route can occasionally be
+returned. It is also not always the cheapest path. nodes_created starts at
+1 + the number of destinations, then adds 1 for each child created.
 """
 from collections import deque
 
